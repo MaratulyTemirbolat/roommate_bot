@@ -1,0 +1,13 @@
+*.pyc
+*.pyo
+*.env
+.idea
+
+__pycache__
+logs
+migrations
+templates
+
+celerybeat.pid
+celerybeat-scheduleg
+db.sqlite3
