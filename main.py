@@ -1,30 +1,70 @@
-# Third party
-from decouple import config
+# Python
+from asyncio import run
+from logging import (
+    basicConfig,
+    INFO,
+)
+from typing import (
+    Tuple,
+    Dict,
+    Any,
+)
 
 # Aiogram
 from aiogram import (
     Bot,
     Dispatcher,
-    executor,
 )
-from aiogram.types import Message
+
+# Project
+from core.handlers.basics import get_start
+from core.settings import settings
 
 
-bot: Bot = Bot(token=config("BOT_TOKEN", cast=str))
-dp: Dispatcher = Dispatcher(bot=bot)
-
-
-@dp.message_handler(commands=["start"])
-async def start_handler(message: Message) -> None:
-    await message.answer(
-        text=f"{message.from_user.first_name}, добро пожаловать в roommate app"
+async def start_bot(
+    bot: Bot,
+    *args: Tuple[Any],
+    **kwargs: Dict[Any, Any]
+) -> None:
+    await bot.send_message(
+        chat_id=settings.bot.admin_id,
+        text="Бот успешно запущен!"
     )
 
 
-@dp.message_handler()
-async def wrong_handler(message: Message) -> None:
-    await message.reply(text="Извините, я вас не понимаю.")
+async def stop_bot(
+    bot: Bot,
+    *args: Tuple[Any],
+    **kwargs: Dict[Any, Any]
+) -> None:
+    await bot.send_message(
+        chat_id=settings.bot.admin_id,
+        text="Бот остановился!"
+    )
+
+
+async def start() -> None:
+    basicConfig(
+        level=INFO,
+        format="%(asctime)s - [%(levelname)s] - %(name)s -"
+               "(%(filename)s). %(funcName)s(%(lineno)d) - %(message)s"
+    )
+    bot: Bot = Bot(
+        token=settings.bot.bot_token,
+        parse_mode="HTML"
+    )
+
+    # Dispatcher это объект, который занимается получением Updates
+    dp: Dispatcher = Dispatcher()
+    dp.startup.register(start_bot)
+    dp.shutdown.register(stop_bot)
+    dp.message.register(get_start)
+
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await bot.session.close()
 
 
 if __name__ == "__main__":
-    executor.start_polling(dispatcher=dp)
+    run(start())
