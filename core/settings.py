@@ -5,6 +5,9 @@ from dataclasses import dataclass
 from decouple import config
 
 
+ONE_MONTH_SECONDS = 2592000
+
+
 @dataclass
 class CustomBot:
     bot_token: str
@@ -26,4 +29,3 @@ def get_settings() -> Setting:
 
 
 settings = get_settings()
-print(settings)
