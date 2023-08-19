@@ -2,6 +2,7 @@
 from re import (
     compile,
     fullmatch,
+    match,
 )
 from typing import Tuple
 
@@ -9,6 +10,15 @@ EMAIL_REG_TEMPLATE = \
     r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+"
 
 MAX_MONTH_BUDJET = 10000000
+
+PHONE_REG_TEMPLATE = "^\\+?[1-9][0-9]{7,14}$"
+
+
+def is_valid_phone_number(phone: str) -> bool:
+    return True if match(
+        pattern=PHONE_REG_TEMPLATE,
+        string=phone
+    ) else False
 
 
 def is_valid_email(email: str) -> bool:
