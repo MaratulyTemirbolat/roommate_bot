@@ -8,7 +8,7 @@ from typing import (
 )
 
 # Third party
-from aiogram.types import Message
+from aiogram.types import TelegramObject
 from aioredis import Redis
 
 # Aiogram
@@ -21,8 +21,8 @@ class RedisMiddleware(BaseMiddleware):
 
     async def __call__(
         self,
-        handler: Callable[[Message, Dict[str, Any]], Awaitable[Any]],
-        event: Message,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
         data: Dict[str, Any]
     ) -> Coroutine[Any, Any, Any]:
         data["redis_cli"] = self.redis
