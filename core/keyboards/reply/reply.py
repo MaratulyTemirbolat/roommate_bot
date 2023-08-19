@@ -1,8 +1,5 @@
 # Python
-from typing import (
-    Optional,
-    Any,
-)
+from typing import Optional
 
 # Aiogram
 from aiogram.types import (
@@ -38,7 +35,8 @@ main_options_reply_keyboard: ReplyKeyboardMarkup = ReplyKeyboardMarkup(
 
 
 def get_main_reply_keyboard(
-    is_registered_user: Optional[Any] = None
+    is_registered_user: Optional[bytes] = None,
+    is_active_account: Optional[bytes] = 0
 ) -> ReplyKeyboardBuilder:
     """Get Keyboard related to the main user part."""
     keyboard_builder: ReplyKeyboardBuilder = ReplyKeyboardBuilder()
@@ -50,10 +48,24 @@ def get_main_reply_keyboard(
             text="Авторизоваться"
         )
     elif is_registered_user:
+        if is_active_account and int(is_active_account) == 1:
+            keyboard_builder.button(
+                text="Поиск людей"
+            )
+            keyboard_builder.button(
+                text="Просмотреть личные данные"
+            )
+            keyboard_builder.button(
+                text="Деактивировать личный аккаунт"
+            )
+        elif is_active_account and int(is_active_account) == 0:
+            keyboard_builder.button(
+                text="Активировать личный аккаунт"
+            )
         keyboard_builder.button(
-            text="Поиск людей"
+            text="Выйти из аккаунта"
         )
-
+        keyboard_builder.adjust(2, 2, 1)
     return keyboard_builder.as_markup(
         resize_keyboard=True,
         one_time_keyboard=True,
@@ -84,6 +96,19 @@ yes_keyboard: ReplyKeyboardMarkup = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True,
     one_time_keyboard=True
+)
+
+no_photo_keyboard: ReplyKeyboardMarkup = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(
+                text="Без фото"
+            )
+        ],
+    ],
+    resize_keyboard=True,
+    one_time_keyboard=True,
+    input_field_placeholder="Загрузите фотографию или нажмите 'Без фото'"
 )
 
 GENDER_OPTIONS = {
