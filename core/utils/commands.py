@@ -36,6 +36,10 @@ async def set_commands(
         BotCommand(
             command="find_roommates",
             description="Поиск людей"
+        ),
+        BotCommand(
+            command="view_account",
+            description="Просмотреть личные профиль"
         )
     ]
     await bot.set_my_commands(
