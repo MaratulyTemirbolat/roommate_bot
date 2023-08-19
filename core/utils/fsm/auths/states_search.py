@@ -10,9 +10,18 @@ GENDERS = {
     "женский": "F",
 }
 
+GENDERS_SHORT = {
+    "M": "мужской",
+    "F": "женский",
+}
+
 
 CITIES = {
     "алматы": 1
+}
+
+CITY_IDS = {
+    1: "Алматы",
 }
 
 DISTRICTS = {
@@ -43,3 +52,4 @@ class UsersSearchSteps(StatesGroup):
     GET_PREFERED_MAX_BUDJET = State()
     GET_PREFERED_CITY = State()
     GET_PREFERED_DISTRICTS = State()
+    GET_CHOOSING_USERS_CARD = State()

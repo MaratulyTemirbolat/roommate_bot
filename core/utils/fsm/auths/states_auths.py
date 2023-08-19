@@ -13,6 +13,8 @@ class RegistrationSteps(StatesGroup):
     GET_FIRST_NAME = State()
     GET_GENDER = State()
     GET_MONTH_BUDJET = State()
+    GET_DISTRICTS_REGISTRATION = State()
+    GET_PHOTO = State()
     GET_PASSWORD = State()
     GET_COMMENT = State()
 
