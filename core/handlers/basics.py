@@ -36,6 +36,19 @@ async def get_start(
         text=f"Привет <b>{message.from_user.first_name}</b>. "
         "Рад тебя видеть в нашем чате\r\n",
         reply_markup=get_main_reply_keyboard(
-            is_registered_user=is_registered
+            is_registered_user=is_registered,
+            is_active_account=await redis_cli.get(
+                name=f"{message.from_user.id}_is_active_account"
+            )
         )
+    )
+
+
+async def handle_unclear_request(
+    message: Message
+) -> None:
+    """Handle unclear command."""
+    await message.answer(
+        text="Извините, я вас не понимаю.\r\n"
+        "Пожалуйста, выберите одну из комманд или нажмите /start"
     )
