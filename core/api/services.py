@@ -74,6 +74,30 @@ async def handle_post(
         return UNAVAILABLE_SERVER_RESPONSE
 
 
+async def handle_patch(
+    url: str,
+    headers: Dict[str, Any] = {},
+    data: Dict[Any, Any] = {},
+    *args: Tuple[Any],
+    **kwargs: Dict[Any, Any]
+) -> Dict[str, Any]:
+    result_response: Dict[str, Any] = {}
+    try:
+        async with ClientSession(headers=headers) as session:
+            async with session.patch(
+                url=url,
+                data=data,
+                **kwargs
+            ) as response:
+                result_response.setdefault("status", response.status)
+                result_response.setdefault("response", await response.json())
+            return result_response
+    except ServerDisconnectedError:
+        return SERVER_DISCTONNECTED_RESPONSE
+    except ClientConnectorError:
+        return UNAVAILABLE_SERVER_RESPONSE
+
+
 # res = run(
 #     main=handle_get(
 #         url="http://localhost:8000/api/v1/auths/users",
